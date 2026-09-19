@@ -277,13 +277,13 @@ jobs:
           cat releases/latest.json | jq .
           echo "================================"
 
-          jq -e '
+          jq -e --arg repo "$REPO" '
             .platform == "android"
             and .packageName == "com.daylybuy.DaylyBuy"
             and (.versionCode | type == "number")
             and (.versionCode > 0)
             and (.versionName | type == "string")
-            and (.apkUrl | test("^https://github.com/DaylyBuy/Daylybuy-Updates/releases/download/"))
+            and (.apkUrl | startswith("https://github.com/" + $repo + "/releases/download/"))
             and (.sha256 | test("^[a-fA-F0-9]{64}$"))
             and (.size | type == "number")
             and (.size > 1000000)
